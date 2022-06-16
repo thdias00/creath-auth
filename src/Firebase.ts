@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { FacebookAuthProvider, getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 
 const firebaseConfig = {
@@ -14,16 +13,29 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-//const analytics = getAnalytics(app);
-export const auth = getAuth(app)
 
-const provider = new GoogleAuthProvider();
+const google = new GoogleAuthProvider();
+
+const facebook = new FacebookAuthProvider();
+
+const auth = getAuth(app)
 
 export const signInWithGoogle = () => {
-  signInWithPopup(auth, provider)
-    .then((result) => {
+  signInWithPopup(auth, google)
+  .then((result) => {
       const name = result.user.displayName as string;
-      localStorage.setItem("@DesafioCreath:user", name);
+      localStorage.setItem("@ChallengeCreath:user", name);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const signInWithFacebook = () => {
+  signInWithPopup(auth, facebook)
+  .then((result) => {
+      const name = result.user.displayName as string;
+      localStorage.setItem("@ChallengeCreath:user", name);
     })
     .catch((error) => {
       console.log(error);
